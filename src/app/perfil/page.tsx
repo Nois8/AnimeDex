@@ -81,7 +81,7 @@ export default async function PerfilPage({
             {/* Info */}
             <div>
               <h1 style={{ fontSize: '26px', fontWeight: 700, color: '#FFFFFF', margin: '0 0 4px 0' }}>
-                Alex Rodriguez
+                {profile?.username || 'Anonymous'}
               </h1>
               <p style={{ fontSize: '14px', color: '#666', margin: '0 0 12px 0' }}>
                 @{profile?.username || 'alexr_anime'}
@@ -91,15 +91,15 @@ export default async function PerfilPage({
               </p>
               <div style={{ display: 'flex', alignItems: 'center', gap: '20px', fontSize: '14px' }}>
                 <span>
-                  <strong style={{ color: '#FFFFFF' }}>{followingCount || 432}</strong>{' '}
+                  <strong style={{ color: '#FFFFFF' }}>{followingCount ?? 0}</strong>{' '}
                   <span style={{ color: '#888' }}>Following</span>
                 </span>
                 <span>
-                  <strong style={{ color: '#FFFFFF' }}>{followersCount || 1248}</strong>{' '}
+                  <strong style={{ color: '#FFFFFF' }}>{followersCount ?? 0}</strong>{' '}
                   <span style={{ color: '#888' }}>Followers</span>
                 </span>
                 <span>
-                  <strong style={{ color: '#FFED70' }}>{reviews.length || 6}</strong>{' '}
+                  <strong style={{ color: '#FFED70' }}>{reviews.length}</strong>{' '}
                   <span style={{ color: '#888' }}>Rated anime</span>
                 </span>
               </div>
