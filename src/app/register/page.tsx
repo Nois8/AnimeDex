@@ -1,8 +1,7 @@
 'use client'
 
 import { registerAction } from '@/controllers/auth.controller'
-import { Button } from '@/components/ui/Button'
-import { Search } from 'lucide-react'
+import { Mail, Lock, User } from 'lucide-react'
 import Link from 'next/link'
 import { useState, useTransition } from 'react'
 
@@ -14,9 +13,9 @@ export default function RegisterPage() {
     setError(null)
     const password = formData.get('password') as string
     const confirm = formData.get('confirm_password') as string
-    
+
     if (password !== confirm) {
-      setError("Passwords do not match")
+      setError('Passwords do not match.')
       return
     }
 
@@ -28,129 +27,251 @@ export default function RegisterPage() {
     })
   }
 
+  const inputStyle: React.CSSProperties = {
+    width: '100%',
+    padding: '14px 16px 14px 48px',
+    backgroundColor: '#161616',
+    color: '#FFFFFF',
+    borderRadius: '8px',
+    border: '1px solid #2A2A2A',
+    outline: 'none',
+    fontSize: '14px',
+    fontFamily: 'inherit',
+  }
+
+  const iconStyle: React.CSSProperties = {
+    position: 'absolute',
+    left: '16px',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    width: '18px',
+    height: '18px',
+    color: '#555',
+  }
+
   return (
-    <main className="flex-grow flex items-center justify-center p-4 pt-28 pb-12 bg-[#121212]">
-      <div className="w-full max-w-[1000px] grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch min-h-[700px]">
-        
-        {/* Left Side: Form */}
-        <div className="bg-[#1C1C1E] rounded-[12px] p-8 md:p-12 flex flex-col justify-center">
-          <div className="w-full max-w-[340px] mx-auto">
-            
-            {/* Logo and Header */}
-            <div className="flex flex-col items-center mb-8 text-center">
-              <div className="w-14 h-14 bg-[#FFED70] rounded-full flex items-center justify-center mb-5">
-                <span className="text-black text-[28px] font-bold leading-none mt-[-2px]">a</span>
+    <main
+      style={{
+        flexGrow: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '120px 56px 48px',
+        backgroundColor: '#121212',
+      }}
+    >
+      <div
+        style={{
+          width: '100%',
+          maxWidth: '1100px',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '0px',
+          alignItems: 'stretch',
+          minHeight: '640px',
+        }}
+      >
+        {/* ==================== LEFT: REGISTER FORM ==================== */}
+        <div
+          style={{
+            backgroundColor: '#1A1A1A',
+            borderRadius: '12px 0 0 12px',
+            padding: '48px 56px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+          }}
+        >
+          <div style={{ width: '100%', maxWidth: '380px', margin: '0 auto' }}>
+
+            {/* Logo + Header */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '36px' }}>
+              <div
+                style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  backgroundColor: '#FFED70',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '20px',
+                }}
+              >
+                <span style={{ fontSize: '32px', fontWeight: 700, color: '#000', lineHeight: 1 }}>a</span>
               </div>
-              <h1 className="text-[22px] font-bold mb-2 text-white">Join AnimeDex</h1>
-              <p className="text-[#A3A3A3] text-[14px]">Create your account and discover the best anime</p>
+              <h1 style={{ fontSize: '24px', fontWeight: 700, color: '#FFFFFF', marginBottom: '8px', textAlign: 'center' }}>
+                Join AnimeDex
+              </h1>
+              <p style={{ color: '#888', fontSize: '14px', textAlign: 'center', margin: 0 }}>
+                Create your account and discover the best anime
+              </p>
             </div>
-            
+
+            {/* Error message */}
             {error && (
-              <div className="mb-6 p-3 bg-red-500/10 border border-red-500/50 rounded text-red-500 text-sm text-center">
+              <div
+                style={{
+                  marginBottom: '20px',
+                  padding: '14px',
+                  backgroundColor: 'rgba(239,68,68,0.08)',
+                  border: '1px solid rgba(239,68,68,0.3)',
+                  borderRadius: '6px',
+                  color: '#EF4444',
+                  fontSize: '13px',
+                  textAlign: 'center',
+                }}
+              >
                 {error}
               </div>
             )}
 
-            <form action={handleSubmit} className="flex flex-col gap-4">
-              {/* Using Search icon to perfectly match the provided mockup's placeholder icons */}
-              <div className="space-y-1.5">
-                <label className="block text-[13px] text-[#D1D1D1]" htmlFor="username">
+            {/* Form */}
+            <form action={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+              {/* Username */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label htmlFor="username" style={{ fontSize: '13px', fontWeight: 500, color: '#FFFFFF' }}>
                   Username
                 </label>
-                <div className="relative">
-                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-[#666]" />
-                  <input 
-                    type="text" 
-                    name="username" 
+                <div style={{ position: 'relative' }}>
+                  <User style={iconStyle} />
+                  <input
+                    type="text"
+                    name="username"
                     id="username"
                     placeholder="otaku_pro"
-                    className="w-full p-3 pl-11 bg-[#121212] text-white rounded-md border border-transparent focus:border-[#FFED70]/50 outline-none transition-all placeholder:text-[#555] text-[14px]" 
-                    required 
+                    required
+                    style={inputStyle}
                   />
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="block text-[13px] text-[#D1D1D1]" htmlFor="email">
+              {/* Email */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label htmlFor="email" style={{ fontSize: '13px', fontWeight: 500, color: '#FFFFFF' }}>
                   Email
                 </label>
-                <div className="relative">
-                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-[#666]" />
-                  <input 
-                    type="email" 
-                    name="email" 
+                <div style={{ position: 'relative' }}>
+                  <Mail style={iconStyle} />
+                  <input
+                    type="email"
+                    name="email"
                     id="email"
                     placeholder="youremail@mail.com"
-                    className="w-full p-3 pl-11 bg-[#121212] text-white rounded-md border border-transparent focus:border-[#FFED70]/50 outline-none transition-all placeholder:text-[#555] text-[14px]" 
-                    required 
+                    required
+                    style={inputStyle}
                   />
                 </div>
               </div>
-              
-              <div className="space-y-1.5">
-                <label className="block text-[13px] text-[#D1D1D1]" htmlFor="password">
+
+              {/* Password */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label htmlFor="password" style={{ fontSize: '13px', fontWeight: 500, color: '#FFFFFF' }}>
                   Password
                 </label>
-                <div className="relative">
-                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-[#666]" />
-                  <input 
-                    type="password" 
-                    name="password" 
+                <div style={{ position: 'relative' }}>
+                  <Lock style={iconStyle} />
+                  <input
+                    type="password"
+                    name="password"
                     id="password"
                     placeholder="••••••••"
-                    className="w-full p-3 pl-11 bg-[#121212] text-white rounded-md border border-transparent focus:border-[#FFED70]/50 outline-none transition-all placeholder:text-[#555] tracking-widest text-[14px]" 
-                    required 
+                    required
                     minLength={6}
+                    style={{ ...inputStyle, letterSpacing: '2px' }}
                   />
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="block text-[13px] text-[#D1D1D1]" htmlFor="confirm_password">
+              {/* Confirm Password */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label htmlFor="confirm_password" style={{ fontSize: '13px', fontWeight: 500, color: '#FFFFFF' }}>
                   Confirm password
                 </label>
-                <div className="relative">
-                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-[#666]" />
-                  <input 
-                    type="password" 
-                    name="confirm_password" 
+                <div style={{ position: 'relative' }}>
+                  <Lock style={iconStyle} />
+                  <input
+                    type="password"
+                    name="confirm_password"
                     id="confirm_password"
                     placeholder="••••••••"
-                    className="w-full p-3 pl-11 bg-[#121212] text-white rounded-md border border-transparent focus:border-[#FFED70]/50 outline-none transition-all placeholder:text-[#555] tracking-widest text-[14px]" 
-                    required 
+                    required
                     minLength={6}
+                    style={{ ...inputStyle, letterSpacing: '2px' }}
                   />
                 </div>
               </div>
 
-              <Button disabled={isPending} type="submit" className="w-full mt-2 font-medium text-black text-[14px] h-[46px] rounded-md bg-[#FFED70] hover:bg-[#FFED70]/90 transition-colors">
+              {/* Submit button */}
+              <button
+                disabled={isPending}
+                type="submit"
+                style={{
+                  width: '100%',
+                  height: '48px',
+                  backgroundColor: '#FFED70',
+                  color: '#000000',
+                  fontWeight: 700,
+                  fontSize: '15px',
+                  borderRadius: '6px',
+                  border: 'none',
+                  cursor: isPending ? 'not-allowed' : 'pointer',
+                  opacity: isPending ? 0.7 : 1,
+                  marginTop: '4px',
+                  fontFamily: 'inherit',
+                }}
+              >
                 {isPending ? 'Creating account...' : 'Create account'}
-              </Button>
+              </button>
             </form>
 
-            <p className="mt-6 text-center text-[13px] text-[#A3A3A3]">
+            {/* Login link */}
+            <p style={{ marginTop: '28px', textAlign: 'center', fontSize: '14px', color: '#888' }}>
               Already have an account?{' '}
-              <Link href="/login" className="text-[#FFED70] hover:underline">
+              <Link href="/login" style={{ color: '#FFED70', textDecoration: 'underline', fontWeight: 500 }}>
                 Sign in
               </Link>
             </p>
-            
-            <p className="mt-8 text-center text-[11px] text-[#666] leading-relaxed">
+
+            {/* Legal text */}
+            <p
+              style={{
+                marginTop: '32px',
+                textAlign: 'center',
+                fontSize: '12px',
+                color: '#555',
+                lineHeight: 1.6,
+                maxWidth: '300px',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
+            >
               By continuing, you agree to our Terms of Service and Privacy Policy
             </p>
           </div>
         </div>
 
-        {/* Right Side: Atmospheric Image (Blue Sky with Birds) */}
-        <div className="hidden md:block relative rounded-[12px] overflow-hidden">
-          <img 
-            src="https://images.unsplash.com/photo-1510006764426-17b5f939eecb?q=80&w=1920&auto=format&fit=crop" 
-            alt="Blue Sky with Birds" 
-            className="absolute inset-0 w-full h-full object-cover"
+        {/* ==================== RIGHT: IMAGE ==================== */}
+        <div
+          style={{
+            position: 'relative',
+            borderRadius: '0 12px 12px 0',
+            overflow: 'hidden',
+          }}
+        >
+          <img
+            src="https://images.unsplash.com/photo-1510006764426-17b5f939eecb?q=80&w=1920&auto=format&fit=crop"
+            alt="Blue Sky with Birds"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
           />
-          <div className="absolute inset-0 bg-cyan-900/10 mix-blend-overlay" />
         </div>
-
       </div>
     </main>
   )
