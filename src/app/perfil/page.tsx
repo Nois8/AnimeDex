@@ -87,7 +87,7 @@ export default async function PerfilPage({
                 @{profile?.username || 'alexr_anime'}
               </p>
               <p style={{ fontSize: '14px', color: '#999', margin: '0 0 16px 0' }}>
-                {profile?.bio || 'Passionate Otaku | Shonen and seinen lover | Watching anime since 2010'}
+                {profile?.bio || ''}
               </p>
               <div style={{ display: 'flex', alignItems: 'center', gap: '20px', fontSize: '14px' }}>
                 <span>
