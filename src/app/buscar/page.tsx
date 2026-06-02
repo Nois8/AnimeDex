@@ -124,7 +124,7 @@ export default async function BuscarPage({
           </div>
           {searchResults.length > 0 ? (
             <div style={gridStyle}>
-              {searchResults.map((anime) => (
+              {searchResults.map((anime: JikanAnime) => (
                 <AnimeCard key={`search-${anime.mal_id}`} {...mapToCard(anime)} />
               ))}
             </div>
@@ -145,7 +145,7 @@ export default async function BuscarPage({
               </Link>
             </div>
             <div style={gridStyle}>
-              {topAnimes.map((anime) => (
+              {topAnimes.map((anime: JikanAnime) => (
                 <AnimeCard key={`pop-${anime.mal_id}`} {...mapToCard(anime)} />
               ))}
             </div>
@@ -181,7 +181,7 @@ export default async function BuscarPage({
               </Link>
             </div>
             <div style={gridStyle}>
-              {seasonalAnimes.map((anime, index) => (
+              {seasonalAnimes.map((anime: JikanAnime, index: number) => (
                 <AnimeCard key={`temp-${anime.mal_id}-${index}`} {...mapToCard(anime)} />
               ))}
             </div>
@@ -199,7 +199,7 @@ export default async function BuscarPage({
               </Link>
             </div>
             <div style={gridStyle}>
-              {allAnimes.map((anime, index) => (
+              {allAnimes.map((anime: JikanAnime, index: number) => (
                 <AnimeCard key={`all-${anime.mal_id}-${index}`} {...mapToCard(anime)} />
               ))}
             </div>

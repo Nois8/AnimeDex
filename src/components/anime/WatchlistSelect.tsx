@@ -54,7 +54,7 @@ export function WatchlistSelect({
       onChange={handleChange}
       disabled={isPending}
     >
-      {STATUS_OPTIONS.map((opt) => (
+      {STATUS_OPTIONS.map((opt: { value: string, label: string }) => (
         <option key={opt.value} value={opt.value}>
           {opt.label}
         </option>

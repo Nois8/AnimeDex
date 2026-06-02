@@ -54,7 +54,7 @@ export function ReviewForm({ animeId, externalId }: { animeId: string; externalI
       )}
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-        {[1, 2, 3, 4, 5].map((star) => (
+        {[1, 2, 3, 4, 5].map((star: number) => (
           <button
             key={star}
             type="button"

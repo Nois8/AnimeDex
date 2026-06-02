@@ -313,7 +313,7 @@ export default async function AnimeDetailsPage({
                           {review.profiles?.username || 'User'}
                         </h4>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
-                          {[1, 2, 3, 4, 5].map((s) => (
+                          {[1, 2, 3, 4, 5].map((s: number) => (
                             <Star
                               key={s}
                               style={{

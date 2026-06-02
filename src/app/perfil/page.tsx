@@ -121,7 +121,7 @@ export default async function PerfilPage({
             paddingBottom: '0',
           }}
         >
-          {tabs.map((tab) => {
+          {tabs.map((tab: { id: string, label: string }) => {
             const isActive = currentTab === tab.id;
             return (
               <Link
