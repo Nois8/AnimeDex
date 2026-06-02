@@ -261,8 +261,8 @@ export default function RegisterPage() {
           }}
         >
           <img
-            src="https://images.unsplash.com/photo-1510006764426-17b5f939eecb?q=80&w=1920&auto=format&fit=crop"
-            alt="Blue Sky with Birds"
+            src="/register-sky.png"
+            alt="Anime Sky"
             style={{
               position: 'absolute',
               inset: 0,
