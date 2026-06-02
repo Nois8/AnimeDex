@@ -230,7 +230,7 @@ export default async function Home() {
             gap: '20px',
           }}
         >
-          {topAnimes.slice(0, 5).map((anime) => (
+          {topAnimes.slice(0, 5).map((anime: JikanAnime) => (
             <AnimeCard key={`top-${anime.mal_id}`} {...mapToCard(anime)} />
           ))}
         </div>
@@ -292,7 +292,7 @@ export default async function Home() {
             gap: '20px',
           }}
         >
-          {seasonalAnimes.slice(0, 5).map((anime, index) => (
+          {seasonalAnimes.slice(0, 5).map((anime: JikanAnime, index: number) => (
             <AnimeCard key={`temp-${anime.mal_id}-${index}`} {...mapToCard(anime)} />
           ))}
         </div>
