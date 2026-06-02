@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import { JikanAnimeResponse, DatabaseAnime } from '@/types/anime'
+import { JikanAnimeResponse, DatabaseAnime, JikanSearchResponse } from '@/types/anime'
 
 export const AnimeService = {
   /**
