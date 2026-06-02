@@ -89,13 +89,13 @@ export default function LoginPage() {
                 }}
               >
                 <img
-                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex"
+                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=AnimeDex"
                   alt="Avatar"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               </div>
               <h1 style={{ fontSize: '24px', fontWeight: 700, color: '#FFFFFF', marginBottom: '8px', textAlign: 'center' }}>
-                Welcome back Alex
+                Welcome back!
               </h1>
               <p style={{ color: '#888', fontSize: '14px', textAlign: 'center', margin: 0 }}>
                 Sign in to continue your anime journey
