@@ -217,8 +217,8 @@ export default function LoginPage() {
           }}
         >
           <img
-            src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?q=80&w=1920&auto=format&fit=crop"
-            alt="Anime Sky Scenery"
+            src="/register-sky.png"
+            alt="Anime Sky"
             style={{
               position: 'absolute',
               inset: 0,
