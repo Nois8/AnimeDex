@@ -42,38 +42,10 @@ export default function LoginPage() {
   }
 
   return (
-    <main
-      style={{
-        flexGrow: 1,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '120px 56px 48px',
-        backgroundColor: '#121212',
-      }}
-    >
-      <div
-        style={{
-          width: '100%',
-          maxWidth: '1100px',
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '0px',
-          alignItems: 'stretch',
-          minHeight: '580px',
-        }}
-      >
+    <main className="auth-main">
+      <div className="auth-grid">
         {/* ==================== LEFT: LOGIN FORM ==================== */}
-        <div
-          style={{
-            backgroundColor: '#1A1A1A',
-            borderRadius: '12px 0 0 12px',
-            padding: '56px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-          }}
-        >
+        <div className="auth-form-panel">
           <div style={{ width: '100%', maxWidth: '380px', margin: '0 auto' }}>
             {/* Avatar */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '40px' }}>
@@ -209,13 +181,7 @@ export default function LoginPage() {
         </div>
 
         {/* ==================== RIGHT: IMAGE ==================== */}
-        <div
-          style={{
-            position: 'relative',
-            borderRadius: '0 12px 12px 0',
-            overflow: 'hidden',
-          }}
-        >
+        <div className="auth-image-panel">
           <img
             src="/register-sky.png"
             alt="Anime Sky"

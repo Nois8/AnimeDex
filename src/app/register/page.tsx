@@ -50,38 +50,10 @@ export default function RegisterPage() {
   }
 
   return (
-    <main
-      style={{
-        flexGrow: 1,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '120px 56px 48px',
-        backgroundColor: '#121212',
-      }}
-    >
-      <div
-        style={{
-          width: '100%',
-          maxWidth: '1100px',
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '0px',
-          alignItems: 'stretch',
-          minHeight: '640px',
-        }}
-      >
+    <main className="auth-main">
+      <div className="auth-grid">
         {/* ==================== LEFT: REGISTER FORM ==================== */}
-        <div
-          style={{
-            backgroundColor: '#1A1A1A',
-            borderRadius: '12px 0 0 12px',
-            padding: '48px 56px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-          }}
-        >
+        <div className="auth-form-panel">
           <div style={{ width: '100%', maxWidth: '380px', margin: '0 auto' }}>
 
             {/* Logo + Header */}
@@ -253,13 +225,7 @@ export default function RegisterPage() {
         </div>
 
         {/* ==================== RIGHT: IMAGE ==================== */}
-        <div
-          style={{
-            position: 'relative',
-            borderRadius: '0 12px 12px 0',
-            overflow: 'hidden',
-          }}
-        >
+        <div className="auth-image-panel">
           <img
             src="/register-sky.png"
             alt="Anime Sky"

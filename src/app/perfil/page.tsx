@@ -54,11 +54,11 @@ export default async function PerfilPage({
   ]
 
   return (
-    <main style={{ minHeight: '100vh', backgroundColor: '#121212', paddingTop: '80px', paddingBottom: '80px' }}>
-      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 56px', width: '100%' }}>
+    <main className="profile-main">
+      <div className="profile-container">
 
         {/* ==================== PROFILE HEADER ==================== */}
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '40px' }}>
+        <div className="profile-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             {/* Avatar */}
             <div
@@ -111,16 +111,7 @@ export default async function PerfilPage({
         </div>
 
         {/* ==================== TABS ==================== */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '32px',
-            borderBottom: '1px solid #2A2A2A',
-            marginBottom: '32px',
-            paddingBottom: '0',
-          }}
-        >
+        <div className="profile-tabs">
           {tabs.map((tab: { id: string, label: string }) => {
             const isActive = currentTab === tab.id;
             return (
@@ -166,7 +157,7 @@ export default async function PerfilPage({
                       border: '1px solid #222',
                     }}
                   >
-                    <div style={{ display: 'flex', gap: '20px' }}>
+                    <div className="review-inner">
                       {/* Anime cover */}
                       <Link href={`/anime/${anime?.external_id}`}>
                         <div
@@ -257,17 +248,17 @@ export default async function PerfilPage({
         )}
 
         {currentTab === 'favoritos' && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '20px' }}>
+          <div className="favorites-grid">
             {favorites.length > 0 ? (
               favorites.map((fav: any) => {
                 const anime = fav.animes;
                 return (
-                  <div key={anime.external_id} style={{ position: 'relative' }}>
+                  <div key={anime.external_id}>
                     <AnimeCard 
                       id={anime.external_id}
                       title={anime.title}
                       year={new Date().getFullYear()} // Default or fetch real year
-                      rating={anime.average_score}
+                      rating={anime.average_score ?? 0}
                       imageUrl={anime.cover_image}
                     />
                     {/* Heart Icon Overlay */}

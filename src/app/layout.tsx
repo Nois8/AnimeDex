@@ -20,9 +20,9 @@ export default function RootLayout({
     <html lang="es">
       <body className={inter.className} style={{ margin: 0, minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#121212', color: '#FFFFFF' }}>
         <Navbar />
-        <main style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', width: '100%' }}>
+        <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', width: '100%' }}>
           {children}
-        </main>
+        </div>
         <Footer />
       </body>
     </html>

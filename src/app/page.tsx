@@ -25,26 +25,17 @@ export default async function Home() {
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', backgroundColor: '#121212' }}>
       {/* ==================== HERO SECTION ==================== */}
       {featuredAnime && (
-        <section
-          style={{
-            position: 'relative',
-            width: '100%',
-            height: '600px',
-            display: 'flex',
-            alignItems: 'flex-end',
-            backgroundColor: '#121212',
-          }}
-        >
-          {/* Background Image — use trailer thumbnail (1280x720) for high quality */}
+        <section className="hero-section">
+          {/* Background Image */}
           <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-            <img 
+            <img
               src={
                 featuredAnime.trailer?.images?.maximum_image_url
                 || featuredAnime.trailer?.images?.large_image_url
                 || featuredAnime.images.jpg?.large_image_url
                 || featuredAnime.images.webp.large_image_url
-              } 
-              alt="Hero Background" 
+              }
+              alt="Hero Background"
               style={{
                 width: '100%',
                 height: '100%',
@@ -53,7 +44,7 @@ export default async function Home() {
               }}
             />
             {/* Gradient overlays */}
-            <div 
+            <div
               style={{
                 position: 'absolute',
                 inset: 0,
@@ -67,16 +58,7 @@ export default async function Home() {
           </div>
 
           {/* Hero Content */}
-          <div
-            style={{
-              position: 'relative',
-              zIndex: 10,
-              maxWidth: '1400px',
-              margin: '0 auto',
-              padding: '0 56px 48px',
-              width: '100%',
-            }}
-          >
+          <div className="hero-content-wrapper">
             <div style={{ maxWidth: '540px' }}>
               {/* Badge "Destacado" */}
               <div
@@ -96,20 +78,11 @@ export default async function Home() {
                 <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#6BCB77' }} />
                 Featured
               </div>
-              
-              <h1
-                style={{
-                  fontSize: '56px',
-                  fontWeight: 700,
-                  color: '#FFFFFF',
-                  marginBottom: '16px',
-                  lineHeight: 1.08,
-                  letterSpacing: '-0.02em',
-                }}
-              >
+
+              <h1 className="hero-title">
                 {featuredAnime.title}
               </h1>
-              
+
               {/* Metadata */}
               <div
                 style={{
@@ -119,6 +92,7 @@ export default async function Home() {
                   fontSize: '13px',
                   color: '#C0C0C0',
                   marginBottom: '20px',
+                  flexWrap: 'wrap',
                 }}
               >
                 <span>{featuredAnime.year || new Date().getFullYear()}</span>
@@ -149,7 +123,7 @@ export default async function Home() {
               </p>
 
               {/* Buttons */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
                 <Link href={`/anime/${featuredAnime.mal_id}`}>
                   <button
                     style={{
@@ -197,14 +171,7 @@ export default async function Home() {
       )}
 
       {/* ==================== ANIMES POPULARES ==================== */}
-      <section
-        style={{
-          maxWidth: '1400px',
-          margin: '0 auto',
-          padding: '64px 56px 48px',
-          width: '100%',
-        }}
-      >
+      <section className="section-popular">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
           <h2 style={{ fontSize: '22px', fontWeight: 700, color: '#FFFFFF' }}>Popular Anime</h2>
           <Link
@@ -222,14 +189,8 @@ export default async function Home() {
             View all <ChevronRight style={{ width: '16px', height: '16px', opacity: 0.7 }} />
           </Link>
         </div>
-        
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(5, minmax(0, 1fr))',
-            gap: '20px',
-          }}
-        >
+
+        <div className="anime-grid-5">
           {topAnimes.slice(0, 5).map((anime: JikanAnime) => (
             <AnimeCard key={`top-${anime.mal_id}`} {...mapToCard(anime)} />
           ))}
@@ -237,14 +198,7 @@ export default async function Home() {
       </section>
 
       {/* ==================== ANIMES DE TEMPORADA ==================== */}
-      <section
-        style={{
-          maxWidth: '1400px',
-          margin: '0 auto',
-          padding: '16px 56px 80px',
-          width: '100%',
-        }}
-      >
+      <section className="section-seasonal">
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '32px' }}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {/* Season badge */}
@@ -284,14 +238,8 @@ export default async function Home() {
             View all <ChevronRight style={{ width: '16px', height: '16px', opacity: 0.7 }} />
           </Link>
         </div>
-        
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(5, minmax(0, 1fr))',
-            gap: '20px',
-          }}
-        >
+
+        <div className="anime-grid-5">
           {seasonalAnimes.slice(0, 5).map((anime: JikanAnime, index: number) => (
             <AnimeCard key={`temp-${anime.mal_id}-${index}`} {...mapToCard(anime)} />
           ))}

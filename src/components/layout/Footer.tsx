@@ -7,16 +7,7 @@ export function Footer() {
 
   return (
     <footer style={{ width: '100%', backgroundColor: '#1A1A1A', paddingTop: '56px', paddingBottom: '24px', marginTop: 'auto' }}>
-      <div
-        style={{
-          maxWidth: '1400px',
-          margin: '0 auto',
-          padding: '0 56px',
-          display: 'grid',
-          gridTemplateColumns: '1fr auto auto',
-          gap: '40px 96px',
-        }}
-      >
+      <div className="footer-grid">
         {/* Brand & Description */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
@@ -58,19 +49,7 @@ export function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div
-        style={{
-          maxWidth: '1400px',
-          margin: '56px auto 0',
-          padding: '24px 56px 0',
-          borderTop: '1px solid #2A2A2A',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          fontSize: '11px',
-          color: '#606060',
-        }}
-      >
+      <div className="footer-bottom">
         <p style={{ margin: 0 }}>© 2024 AnimeHub. Todos los derechos reservados.</p>
         <p style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '4px' }}>
           Hecho con <Heart style={{ width: '12px', height: '12px', color: '#FFED70', fill: '#FFED70' }} /> para la comunidad anime
