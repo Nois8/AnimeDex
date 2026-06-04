@@ -30,21 +30,6 @@ export function ReviewForm({
       return
     }
 
-    // Añadir review de forma optimista
-    if (onOptimisticAdd) {
-      onOptimisticAdd({
-        id: `optimistic-${Date.now()}`,
-        rating,
-        content,
-        created_at: new Date().toISOString(),
-        profiles: {
-          username: user?.user_metadata?.name || 'You',
-          avatar_url: user?.user_metadata?.avatar_url || ''
-        },
-        isOptimistic: true
-      })
-    }
-
     const currentRating = rating
     const currentContent = content
 
@@ -53,6 +38,21 @@ export function ReviewForm({
     setContent('')
 
     startTransition(async () => {
+      // Añadir review de forma optimista
+      if (onOptimisticAdd) {
+        onOptimisticAdd({
+          id: `optimistic-${Date.now()}`,
+          rating: currentRating,
+          content: currentContent,
+          created_at: new Date().toISOString(),
+          profiles: {
+            username: user?.user_metadata?.name || 'You',
+            avatar_url: user?.user_metadata?.avatar_url || ''
+          },
+          isOptimistic: true
+        })
+      }
+
       const formData = new FormData()
       formData.append('animeId', animeId)
       formData.append('externalId', externalId)
