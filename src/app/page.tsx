@@ -3,6 +3,15 @@ import { Play, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import { AnimeService } from '@/services/anime.service'
 import { JikanAnime } from '@/types/anime'
+import { createClient } from '@/lib/supabase/server'
+import { ListService } from '@/services/list.service'
+import { WatchlistSelect } from '@/components/anime/WatchlistSelect'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'AnimeDex - Discover & Track Anime',
+  description: 'The ultimate platform to discover, rate, and share your favorite anime with the world.',
+}
 
 export default async function Home() {
   const topAnimesResponse = await AnimeService.getTopAnimes(1);
@@ -13,6 +22,23 @@ export default async function Home() {
 
   const featuredAnime = seasonalAnimes.length > 0 ? seasonalAnimes[0] : topAnimes[0];
 
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  let featuredDbAnime = null;
+  let watchlistEntry = null;
+
+  if (featuredAnime) {
+    try {
+      featuredDbAnime = await AnimeService.getAnimeByExternalId(featuredAnime.mal_id)
+      if (user && featuredDbAnime) {
+        watchlistEntry = await ListService.getWatchlistEntry(featuredDbAnime.id, user.id)
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   const mapToCard = (anime: JikanAnime) => ({
     id: anime.mal_id,
     title: anime.title,
@@ -21,6 +47,16 @@ export default async function Home() {
     imageUrl: anime.images.webp.large_image_url
   });
 
+  const getCurrentSeason = () => {
+    const month = new Date().getMonth();
+    const year = new Date().getFullYear();
+    if (month >= 2 && month <= 4) return `Spring ${year}`;
+    if (month >= 5 && month <= 7) return `Summer ${year}`;
+    if (month >= 8 && month <= 10) return `Fall ${year}`;
+    return `Winter ${year}`;
+  };
+  const currentSeason = getCurrentSeason();
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', backgroundColor: '#121212' }}>
       {/* ==================== HERO SECTION ==================== */}
@@ -28,6 +64,7 @@ export default async function Home() {
         <section className="hero-section">
           {/* Background Image */}
           <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={
                 featuredAnime.trailer?.images?.maximum_image_url
@@ -124,26 +161,35 @@ export default async function Home() {
 
               {/* Buttons */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                <Link href={`/anime/${featuredAnime.mal_id}`}>
-                  <button
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      backgroundColor: '#FFFFFF',
-                      color: '#000000',
-                      fontWeight: 600,
-                      fontSize: '14px',
-                      padding: '0 24px',
-                      height: '42px',
-                      borderRadius: '4px',
-                      border: 'none',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <Play style={{ width: '16px', height: '16px', fill: 'currentColor' }} /> Watch Now
-                  </button>
-                </Link>
+                {featuredDbAnime ? (
+                  <WatchlistSelect
+                    animeId={featuredDbAnime.id}
+                    initialStatus={watchlistEntry?.status}
+                    externalId={String(featuredAnime.mal_id)}
+                    isLoggedIn={!!user}
+                  />
+                ) : (
+                  <Link href={`/anime/${featuredAnime.mal_id}`}>
+                    <button
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        backgroundColor: '#FFED70',
+                        color: '#000000',
+                        fontWeight: 600,
+                        fontSize: '14px',
+                        padding: '0 24px',
+                        height: '42px',
+                        borderRadius: '4px',
+                        border: 'none',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <Play style={{ width: '16px', height: '16px', fill: 'currentColor' }} /> Watch Now
+                    </button>
+                  </Link>
+                )}
                 <Link href={`/anime/${featuredAnime.mal_id}`}>
                   <button
                     style={{
@@ -218,7 +264,7 @@ export default async function Home() {
               }}
             >
               <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#6BCB77' }} />
-              Spring 2026
+              {currentSeason}
             </div>
             <h2 style={{ fontSize: '22px', fontWeight: 700, color: '#FFFFFF' }}>Seasonal Anime</h2>
           </div>

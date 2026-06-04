@@ -16,7 +16,7 @@ export function NavbarClient({ user, avatarUrl, logoutAction }: NavbarClientProp
   return (
     <nav
       style={{
-        position: 'fixed',
+        position: 'absolute',
         top: 0,
         left: 0,
         width: '100%',
@@ -34,6 +34,7 @@ export function NavbarClient({ user, avatarUrl, logoutAction }: NavbarClientProp
         <div className="nav-links">
           <Link href="/" style={{ color: '#E0E0E0', textDecoration: 'none' }}>Home</Link>
           <Link href="/buscar" style={{ color: '#B0B0B0', textDecoration: 'none' }}>Explore</Link>
+          <Link href="/usuarios" style={{ color: '#B0B0B0', textDecoration: 'none' }}>Users</Link>
 
           {user ? (
             <>
@@ -103,6 +104,9 @@ export function NavbarClient({ user, avatarUrl, logoutAction }: NavbarClientProp
         </Link>
         <Link href="/buscar" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
           Explore
+        </Link>
+        <Link href="/usuarios" className="nav-mobile-link" onClick={() => setMenuOpen(false)}>
+          Users
         </Link>
 
         {user ? (

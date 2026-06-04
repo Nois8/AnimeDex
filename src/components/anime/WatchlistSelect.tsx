@@ -3,6 +3,8 @@
 import { useState, useTransition } from 'react'
 import { WatchlistStatus } from '@/types/lists'
 import { updateWatchlistAction } from '@/controllers/list.controller'
+import { ChevronDown, Plus } from 'lucide-react'
+import Link from 'next/link'
 
 const STATUS_OPTIONS: { value: WatchlistStatus | ''; label: string }[] = [
   { value: '', label: 'Añadir a lista' },
@@ -16,11 +18,13 @@ const STATUS_OPTIONS: { value: WatchlistStatus | ''; label: string }[] = [
 export function WatchlistSelect({ 
   animeId, 
   initialStatus, 
-  externalId 
+  externalId,
+  isLoggedIn = false
 }: { 
   animeId: string; 
   initialStatus?: WatchlistStatus;
   externalId: string;
+  isLoggedIn?: boolean;
 }) {
   const [status, setStatus] = useState<WatchlistStatus | ''>(initialStatus || '')
   const [isPending, startTransition] = useTransition()
@@ -47,18 +51,33 @@ export function WatchlistSelect({
     })
   }
 
+  if (!isLoggedIn) {
+    return (
+      <Link href="/login" style={{ textDecoration: 'none' }}>
+        <button className="inline-flex items-center gap-[8px] bg-[#FFED70] text-[#000] font-bold text-[14px] px-[24px] h-[42px] rounded-[6px] cursor-pointer border-none hover:bg-[#e6d565] transition-colors">
+          <Plus className="w-[16px] h-[16px]" /> Añadir a lista
+        </button>
+      </Link>
+    )
+  }
+
   return (
-    <select
-      className="h-12 px-4 rounded-[4px] bg-[#202020] text-gray-300 border-none outline-none focus:ring-1 focus:ring-[#FFED70]/50 appearance-none cursor-pointer disabled:opacity-50 text-[14px] font-medium"
-      value={status}
-      onChange={handleChange}
-      disabled={isPending}
-    >
-      {STATUS_OPTIONS.map((opt: { value: string, label: string }) => (
-        <option key={opt.value} value={opt.value}>
-          {opt.label}
-        </option>
-      ))}
-    </select>
+    <div className="relative inline-block">
+      <select
+        className="inline-flex items-center gap-[8px] bg-[#FFED70] text-[#000] font-bold text-[14px] pl-[24px] pr-[40px] h-[42px] rounded-[6px] cursor-pointer border-none outline-none appearance-none hover:bg-[#e6d565] transition-colors disabled:opacity-50"
+        value={status}
+        onChange={handleChange}
+        disabled={isPending}
+      >
+        {STATUS_OPTIONS.map((opt: { value: string, label: string }) => (
+          <option key={opt.value} value={opt.value} className="bg-[#1A1A1A] text-[#FFF] font-medium">
+            {opt.label}
+          </option>
+        ))}
+      </select>
+      <div className="absolute right-[14px] top-[13px] pointer-events-none text-[#000]">
+        <ChevronDown className="w-[16px] h-[16px]" />
+      </div>
+    </div>
   )
 }

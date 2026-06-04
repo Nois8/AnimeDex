@@ -7,19 +7,22 @@ import { JikanAnime } from '@/types/anime'
 export default async function BuscarPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>
+  searchParams: Promise<{ q?: string; page?: string }>
 }) {
   const resolvedParams = await searchParams;
   const query = resolvedParams.q || '';
+  const page = parseInt(resolvedParams.page || '1', 10) || 1;
 
   let searchResults: JikanAnime[] = [];
+  let hasNextPage = false;
   let topAnimes: JikanAnime[] = [];
   let seasonalAnimes: JikanAnime[] = [];
   let allAnimes: JikanAnime[] = [];
 
   if (query) {
-    const res = await AnimeService.searchAnimes(query);
+    const res = await AnimeService.searchAnimes(query, page);
     searchResults = res?.data || [];
+    hasNextPage = res?.pagination?.has_next_page || false;
   } else {
     const [topRes, seasonRes] = await Promise.all([
       AnimeService.getTopAnimes(1),
@@ -102,11 +105,40 @@ export default async function BuscarPage({
             </h2>
           </div>
           {searchResults.length > 0 ? (
-            <div className="anime-grid-5">
-              {searchResults.map((anime: JikanAnime) => (
-                <AnimeCard key={`search-${anime.mal_id}`} {...mapToCard(anime)} />
-              ))}
-            </div>
+            <>
+              <div className="anime-grid-5">
+                {searchResults.map((anime: JikanAnime) => (
+                  <AnimeCard key={`search-${anime.mal_id}`} {...mapToCard(anime)} />
+                ))}
+              </div>
+              
+              {/* Pagination Controls */}
+              <div className="flex items-center justify-center gap-[12px] mt-[40px]">
+                {page > 1 ? (
+                  <Link href={`/buscar?q=${encodeURIComponent(query)}&page=${page - 1}`} className="px-[20px] py-[10px] bg-[#222] text-[#FFF] rounded-[8px] font-semibold hover:bg-[#333] transition-colors no-underline">
+                    Previous
+                  </Link>
+                ) : (
+                  <span className="px-[20px] py-[10px] bg-[#111] text-[#555] rounded-[8px] font-semibold cursor-not-allowed">
+                    Previous
+                  </span>
+                )}
+                
+                <span className="text-[#888] font-medium px-[8px]">
+                  Page {page}
+                </span>
+
+                {hasNextPage ? (
+                  <Link href={`/buscar?q=${encodeURIComponent(query)}&page=${page + 1}`} className="px-[20px] py-[10px] bg-[#222] text-[#FFF] rounded-[8px] font-semibold hover:bg-[#333] transition-colors no-underline">
+                    Next
+                  </Link>
+                ) : (
+                  <span className="px-[20px] py-[10px] bg-[#111] text-[#555] rounded-[8px] font-semibold cursor-not-allowed">
+                    Next
+                  </span>
+                )}
+              </div>
+            </>
           ) : (
             <div style={{ color: '#666', textAlign: 'center', padding: '80px 0', fontSize: '15px' }}>
               No results found for &quot;{query}&quot;.

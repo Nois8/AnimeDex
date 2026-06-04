@@ -22,6 +22,11 @@ export async function submitReviewAction(formData: FormData) {
       return { error: 'Faltan datos obligatorios' }
     }
 
+    // Validación estricta del rating
+    if (rating < 1 || rating > 5 || !Number.isInteger(rating)) {
+      return { error: 'La valoración debe ser un número entero entre 1 y 5.' }
+    }
+
     await ReviewService.submitReview({
       animeId,
       userId: user.id,

@@ -33,6 +33,12 @@ export async function updateWatchlistAction(formData: FormData) {
     
     // Extraemos campos opcionales del formData
     const statusStr = formData.get('status')
+    
+    // Validación estricta del status
+    const VALID_STATUSES = new Set(['watching', 'completed', 'on_hold', 'dropped', 'plan_to_watch'])
+    if (statusStr && !VALID_STATUSES.has(statusStr as string)) {
+      return { error: 'Estado de watchlist inválido.' }
+    }
     const status = statusStr ? (statusStr as WatchlistStatus) : undefined
     
     const episodesStr = formData.get('episodesWatched')

@@ -26,6 +26,14 @@ export interface JikanAnime {
   score: number | null;
   episodes: number | null;
   year: number | null;
+  status?: string;
+  duration?: string;
+  season?: string;
+  type?: string;
+  rating?: string;
+  source?: string;
+  studios?: { mal_id: number; name: string }[];
+  genres?: { mal_id: number; name: string }[];
 }
 
 export interface JikanAnimeResponse {

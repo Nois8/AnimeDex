@@ -4,19 +4,36 @@ import { useState, useTransition } from 'react'
 import { Heart } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { toggleFavoriteAction } from '@/controllers/list.controller'
+import Link from 'next/link'
 
 export function FavoriteButton({ 
   animeId, 
   initialIsFavorite, 
-  externalId 
+  externalId,
+  isLoggedIn = false
 }: { 
   animeId: string; 
   initialIsFavorite: boolean;
   externalId: string;
+  isLoggedIn?: boolean;
 }) {
   const [isFavorite, setIsFavorite] = useState(initialIsFavorite)
   const [isPending, startTransition] = useTransition()
   const [isAnimating, setIsAnimating] = useState(false)
+
+  if (!isLoggedIn) {
+    return (
+      <Link href="/login" style={{ textDecoration: 'none' }}>
+        <Button 
+          variant="secondary" 
+          size="lg" 
+          className="h-12 px-[24px] rounded-[4px] bg-[#202020] hover:bg-[#2A2A2A] border-none text-[#FFFFFF] font-bold text-[14px] transition-all duration-300"
+        >
+          Log in to save
+        </Button>
+      </Link>
+    )
+  }
 
   const handleToggle = async () => {
     const currentState = isFavorite

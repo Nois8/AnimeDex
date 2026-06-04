@@ -41,6 +41,75 @@ export const ProfileService = {
   },
 
   /**
+   * Busca perfiles de usuario por su username.
+   */
+  async searchUsers(query: string, page: number = 1, limit: number = 20) {
+    if (!query) return { data: [], count: 0, hasNextPage: false }
+
+    const supabase = await createClient()
+
+    const from = (page - 1) * limit;
+    const to = from + limit - 1;
+
+    const { data, error, count } = await supabase
+      .from('profiles')
+      .select('id, username, avatar_url, bio, created_at', { count: 'exact' })
+      .ilike('username', `%${query}%`)
+      .range(from, to)
+
+    if (error) {
+      console.error('Error searching users:', error.message)
+      return { data: [], count: 0, hasNextPage: false }
+    }
+
+    const hasNextPage = count ? (from + limit) < count : false;
+
+    return {
+      data: data || [],
+      count: count || 0,
+      hasNextPage
+    }
+  },
+
+  /**
+   * Obtiene la lista de usuarios que siguen a un usuario específico.
+   */
+  async getFollowers(userId: string) {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('follows')
+      .select('profiles!follower_id(id, username, avatar_url, bio, created_at)')
+      .eq('following_id', userId)
+
+    if (error) {
+      console.error('Error fetching followers:', error.message)
+      return []
+    }
+
+    // Aplanar el resultado
+    return data.map((item: any) => item.profiles)
+  },
+
+  /**
+   * Obtiene la lista de usuarios a los que sigue un usuario específico.
+   */
+  async getFollowing(userId: string) {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('follows')
+      .select('profiles!following_id(id, username, avatar_url, bio, created_at)')
+      .eq('follower_id', userId)
+
+    if (error) {
+      console.error('Error fetching following:', error.message)
+      return []
+    }
+
+    // Aplanar el resultado
+    return data.map((item: any) => item.profiles)
+  },
+
+  /**
    * Verifica si el usuario autenticado sigue a otro usuario.
    */
   async isFollowing(followerId: string, followingId: string) {
@@ -57,6 +126,33 @@ export const ProfileService = {
     if (error || !data) return false
 
     return true
+  },
+
+  /**
+   * Verifica en lote si el usuario autenticado sigue a una lista de usuarios (Evita N+1).
+   * Devuelve un objeto donde la key es el ID del usuario y el valor es un boolean.
+   */
+  async getFollowingStatusesBatch(followerId: string, followingIds: string[]) {
+    if (!followingIds || followingIds.length === 0) return {}
+    
+    const supabase = await createClient()
+
+    const { data, error } = await supabase
+      .from('follows')
+      .select('following_id')
+      .eq('follower_id', followerId)
+      .in('following_id', followingIds)
+
+    if (error) {
+      console.error('Error in getFollowingStatusesBatch:', error.message)
+      return {}
+    }
+
+    const followingSet = new Set(data?.map(d => d.following_id) || [])
+    
+    return Object.fromEntries(
+      followingIds.map(id => [id, followingSet.has(id)])
+    )
   },
 
   /**

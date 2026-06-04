@@ -1,6 +1,37 @@
 import { createClient } from '@/lib/supabase/server'
 import { JikanAnimeResponse, DatabaseAnime, JikanSearchResponse } from '@/types/anime'
 
+/**
+ * Utilidad para hacer fetch con Exponential Backoff.
+ * Ideal para APIs con Rate Limits estrictos como Jikan (3 req/sec).
+ */
+export async function fetchWithRetry(url: string, options: RequestInit = {}, maxRetries = 3): Promise<Response> {
+  let retries = 0;
+  
+  while (retries < maxRetries) {
+    const response = await fetch(url, options);
+    
+    // Si la respuesta es exitosa o es un 404 (Not Found real), devolvemos
+    if (response.ok || response.status === 404) {
+      return response;
+    }
+    
+    // Si es 429 Too Many Requests, hacemos backoff
+    if (response.status === 429) {
+      const waitTime = Math.pow(2, retries) * 1000 + Math.random() * 500; // 1s, 2s, 4s + jitter
+      console.warn(`Rate limit hit (429) on ${url}. Retrying in ${waitTime.toFixed(0)}ms...`);
+      await new Promise(resolve => setTimeout(resolve, waitTime));
+      retries++;
+      continue;
+    }
+    
+    // Otros errores (500, etc.), podríamos reintentar o no, pero 429 es el principal.
+    throw new Error(`Jikan API Error: ${response.status} ${response.statusText}`);
+  }
+  
+  throw new Error(`Failed to fetch ${url} after ${maxRetries} retries.`);
+}
+
 export const AnimeService = {
   /**
    * Obtiene un anime por su ID de MyAnimeList.
@@ -26,7 +57,10 @@ export const AnimeService = {
 
     // 2. Si no existe, lo buscamos en la API de Jikan
     try {
-      const response = await fetch(`https://api.jikan.moe/v4/anime/${externalId}`)
+      // Usamos revalidate para que Next.js parchee peticiones simultáneas si ocurrieran
+      const response = await fetchWithRetry(`https://api.jikan.moe/v4/anime/${externalId}`, {
+        next: { revalidate: 86400 } // Caché de 24h para el fetch externo
+      })
       
       if (!response.ok) {
         if (response.status === 404) return null
@@ -79,7 +113,7 @@ export const AnimeService = {
    */
   async searchAnimes(query: string, page: number = 1): Promise<JikanSearchResponse | null> {
     try {
-      const response = await fetch(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}&page=${page}&sfw=true`, {
+      const response = await fetchWithRetry(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}&page=${page}&sfw=true`, {
         next: { revalidate: 3600 }
       })
       if (!response.ok) {
@@ -101,7 +135,7 @@ export const AnimeService = {
   async getTopAnimes(page: number = 1): Promise<JikanSearchResponse | null> {
     try {
       // type=tv y filter=bypopularity son filtros comunes en Jikan para simular MAL
-      const response = await fetch(`https://api.jikan.moe/v4/top/anime?page=${page}&type=tv&filter=bypopularity`, {
+      const response = await fetchWithRetry(`https://api.jikan.moe/v4/top/anime?page=${page}&type=tv&filter=bypopularity`, {
         next: { revalidate: 3600 }
       })
       if (!response.ok) {
@@ -121,7 +155,7 @@ export const AnimeService = {
    */
   async getSeasonalAnimes(page: number = 1): Promise<JikanSearchResponse | null> {
     try {
-      const response = await fetch(`https://api.jikan.moe/v4/seasons/now?page=${page}&sfw=true`, {
+      const response = await fetchWithRetry(`https://api.jikan.moe/v4/seasons/now?page=${page}&sfw=true`, {
         next: { revalidate: 3600 }
       })
       if (!response.ok) {
