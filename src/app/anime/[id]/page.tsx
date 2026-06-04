@@ -68,10 +68,20 @@ export default async function AnimeDetailsPage({
     : null;
   const reviews = await ReviewService.getAnimeReviews(dbAnime.id);
 
-  const [jikanRes, charsRes] = await Promise.all([
-    fetchWithRetry(`https://api.jikan.moe/v4/anime/${animeId}/full`),
-    fetchWithRetry(`https://api.jikan.moe/v4/anime/${animeId}/characters`),
-  ]);
+  let jikanRes, charsRes;
+  try {
+    [jikanRes, charsRes] = await Promise.all([
+      fetchWithRetry(`https://api.jikan.moe/v4/anime/${animeId}/full`),
+      fetchWithRetry(`https://api.jikan.moe/v4/anime/${animeId}/characters`),
+    ]);
+  } catch (err: any) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-neutral-950 text-white flex-col gap-4">
+        <h2 className="text-2xl text-[#FFED70] font-bold">Server Busy</h2>
+        <p className="text-neutral-400">The Jikan Anime API is currently experiencing high traffic (Rate Limit Exceeded). Please refresh in a few seconds.</p>
+      </div>
+    );
+  }
 
   if (!jikanRes.ok) {
     return (
