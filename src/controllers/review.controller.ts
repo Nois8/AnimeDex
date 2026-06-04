@@ -18,7 +18,7 @@ export async function submitReviewAction(formData: FormData) {
     const rating = Number(formData.get('rating'))
     const externalId = formData.get('externalId') as string // Para revalidar la URL
 
-    if (!animeId || !content || !rating) {
+    if (!animeId || content === null || content === undefined || !rating) {
       return { error: 'Faltan datos obligatorios' }
     }
 
