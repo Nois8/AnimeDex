@@ -39,7 +39,7 @@ export function AnimeInfoSidebar({ fullAnime, dbAnime }: AnimeInfoSidebarProps) 
           label="Premiered"
           value={fullAnime.season && fullAnime.year ? `${fullAnime.season} ${fullAnime.year}` : "Unknown"}
         />
-        <InfoRow icon={<Info className="w-[14px] h-[14px]" />} label="Status" value={statusText} />
+        <InfoRow icon={<Info className="w-[14px] h-[14px]" />} label="Status" value={statusText || "Unknown"} />
         <InfoRow icon={<BookOpen className="w-[14px] h-[14px]" />} label="Source" value={fullAnime.source || "Unknown"} />
         <InfoRow icon={<Users className="w-[14px] h-[14px]" />} label="Studio" value={fullAnime.studios?.[0]?.name || "Unknown"} />
         <InfoRow icon={<ShieldAlert className="w-[14px] h-[14px]" />} label="Rating" value={fullAnime.rating || "Unknown"} />
