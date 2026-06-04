@@ -29,10 +29,6 @@ export function ReviewForm({
       setError('Please select a rating.')
       return
     }
-    if (content.trim().length < 10) {
-      setError('The review must be at least 10 characters long.')
-      return
-    }
 
     // Añadir review de forma optimista
     if (onOptimisticAdd) {
@@ -109,7 +105,7 @@ export function ReviewForm({
 
       <textarea
         className="w-full bg-[#101010] border border-[#1F2937] rounded-[4px] p-[16px] text-[#FFFFFF] outline-none min-h-[120px] resize-y mb-[16px] text-[14px] font-inherit box-border"
-        placeholder="What did you think of this anime? (Minimum 10 characters)"
+        placeholder="What did you think of this anime? (Optional)"
         value={content}
         onChange={(e) => setContent(e.target.value)}
         disabled={isPending}

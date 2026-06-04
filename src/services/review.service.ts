@@ -49,9 +49,6 @@ export const ReviewService = {
     if (rating < 1 || rating > 5) {
       throw new Error('La puntuación debe estar entre 1 y 5 estrellas.')
     }
-    if (content.length < 10) {
-      throw new Error('La reseña debe tener al menos 10 caracteres.')
-    }
 
     // Usamos upsert para actualizar si ya existía (onConflict)
     const { error } = await supabase
